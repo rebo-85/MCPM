@@ -1,0 +1,35 @@
+/* Default light mode styles */
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh; /* Ensure the body takes up the full viewport height */
+  background-image: url('src/assets/images/background.png');
+  background-size: cover; /* Cover the entire page */
+  background-repeat: no-repeat; /* Prevent image repetition */
+  background-position: center center; /* Center the image */
+
+}
+
+
+.logo {
+  display: flex;
+  width: 300px;
+  height: 200px;
+  padding-left: 10px;
+    justify-content: flex-end;
+    height: 60px;
+    padding: 0 20px;
+    position: relative;
+    justify-content: center; 
+  height: 175px;
+  width: 200px;
+}
+
+/* Dark mode styles */
+/* @media (prefers-color-scheme: dark) {
+  body {
+    background-color: black;
+    color: white;
+  }
+} */
