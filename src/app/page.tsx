@@ -26,6 +26,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { KpiChart } from "@/components/ui/kpi_chart";
 import Image from "next/image"
+import { useRouter } from 'next/router';
+
 // ---------- Types ----------
 
 type NavItem = { label: string; href: string };
@@ -52,6 +54,8 @@ type Testimonial = {
 };
 
 // ---------- Data ----------
+const prefix = process.env.NODE_ENV === 'production' ? '/MCPM' : '';
+
 const features: Feature[] = [
   {
     icon: <TrendingUp className="h-6 w-6" />,
@@ -186,7 +190,7 @@ const Header: React.FC = () => {
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between py-4">
       <a href="#" className="flex items-center gap-2 font-semibold">
         <Image
-          src="/favicon.ico"
+          src={`${prefix}/favicon.ico`}
           alt="MCPM logo"
           width={32}
           height={32}
@@ -551,7 +555,7 @@ const Footer: React.FC = () => (
       <div className="space-y-3">
       <a href="#" className="flex items-center gap-2 font-semibold">
         <Image
-          src="/favicon.ico"
+          src={`${prefix}/favicon.ico`}
           alt="MCPM logo"
           width={32}
           height={32}
@@ -609,7 +613,7 @@ export default function BusinessWebsiteTemplate() {
     <main className="min-h-screen bg-white text-gray-900">
        <div className="w-full aspect-[3/1] bg-gray-100 relative">
         <Image
-          src="/images/cover.jpg"
+          src={`${prefix}/images/cover.jpg`}
           alt="construction materials cover"
           fill
           className="object-contain"
