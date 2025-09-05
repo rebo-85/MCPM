@@ -228,21 +228,21 @@ const Header: React.FC = () => {
 };
 
 
-const ImageLoop: React.FC = () => (
-  <div className="flex gap-4 overflow-x-auto py-4">
-    {image_urls.map((url, idx) => (
-      <Image
-        key={idx}
-        src={url}
-        alt={`loop_image_${idx}`}
-        width={320}
-        height={160}
-        className="h-40 w-auto rounded-xl object-cover flex-shrink-0"
-        unoptimized
-      />
-    ))}
-  </div>
-);
+// const ImageLoop: React.FC = () => (
+//   <div className="flex gap-4 overflow-x-auto py-4">
+//     {image_urls.map((url, idx) => (
+//       <Image
+//         key={idx}
+//         src={url}
+//         alt={`loop_image_${idx}`}
+//         width={320}
+//         height={160}
+//         className="h-40 w-auto rounded-xl object-cover flex-shrink-0"
+//         unoptimized
+//       />
+//     ))}
+//   </div>
+// );
 
 const Hero: React.FC = () => (
   <section className="relative overflow-hidden">
