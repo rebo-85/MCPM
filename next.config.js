@@ -1,7 +1,4 @@
-const isGithubPages = process.env.NODE_ENV === "production";
+/** @type {import('next').NextConfig} */
 
-module.exports = {
-  // For static export (next export)
-  assetPrefix: isGithubPages ? "/MCPM/" : "",
-  basePath: isGithubPages ? "/MCPM" : "",
-};
+const nextConfig = {};
+module.exports = nextConfig;
