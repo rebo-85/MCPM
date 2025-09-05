@@ -1,6 +1,11 @@
 /** @type {import('next').NextConfig} */
-const repo = "MCPM"; // your repo name
-module.exports = {
-  basePath: `/${repo}`,
-  assetPrefix: `/${repo}/`,
+const isProd = process.env.NODE_ENV === "production";
+const nextConfig = {
+  output: "export",
+  images: {
+    unoptimized: true,
+  },
+  basePath: isProd ? "/MCPM" : "",
+  assetPrefix: isProd ? "/MCPM/" : "",
 };
+module.exports = nextConfig;
