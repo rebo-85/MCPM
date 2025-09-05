@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   ArrowRight,
@@ -11,6 +12,7 @@ import {
   MapPin,
   ExternalLink,
 } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -22,9 +24,8 @@ import {
 } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {Header, KpiChart} from "@/components/client";
-import { motion } from "framer-motion";
-
+import { KpiChart } from "@/components/ui/kpi_chart";
+import Image from "next/image"
 // ---------- Types ----------
 
 type NavItem = { label: string; href: string };
@@ -51,101 +52,91 @@ type Testimonial = {
 };
 
 // ---------- Data ----------
-
-const nav: NavItem[] = [
-  { label: "Features", href: "#features" },
-  { label: "Solutions", href: "#solutions" },
-  { label: "Pricing", href: "#pricing" },
-  { label: "Work", href: "#portfolio" },
-  { label: "About", href: "#about" },
-  { label: "FAQ", href: "#faq" },
-];
-
 const features: Feature[] = [
   {
     icon: <TrendingUp className="h-6 w-6" />,
-    title: "Growth-first",
+    title: "Premium Cement",
     description:
-      "A strategy-led approach that turns traffic into revenue with measurable outcomes.",
+      "High-strength cement for durable and long-lasting construction.",
   },
   {
     icon: <Users2 className="h-6 w-6" />,
-    title: "Human-centered",
+    title: "Precast Blocks",
     description:
-      "We design experiences people actually enjoy using, not just clicking.",
+      "Ready-to-use precast concrete blocks for fast and efficient building.",
   },
   {
     icon: <ShieldCheck className="h-6 w-6" />,
-    title: "Reliable stack",
+    title: "Quality Sand",
     description:
-      "Modern, secure, and maintainable tech—battle-tested patterns and tooling.",
+      "Clean, graded sand ideal for mixing and finishing.",
   },
   {
     icon: <Handshake className="h-6 w-6" />,
-    title: "Partner mindset",
+    title: "Iron Bars",
     description:
-      "We collaborate as an extension of your team to hit your milestones.",
+      "Reinforced iron bars for strong structural support.",
   },
 ];
 
 const plans: Plan[] = [
   {
-    name: "Starter",
-    price: "$499",
-    tagline: "Launch a clean, credible presence in days.",
+    name: "Basic Materials",
+    price: "$199",
+    tagline: "Essential supplies for small projects.",
     features: [
-      "1 landing page",
-      "Basic analytics",
-      "Email capture",
-      "SEO-ready structure",
+      "1 bag premium cement",
+      "10 precast blocks",
+      "1 ton quality sand",
+      "5 iron bars",
     ],
-    cta: "Get Started",
+    cta: "Order Now",
   },
   {
-    name: "Growth",
-    price: "$1,499",
-    tagline: "Scale with multi-page and integrations.",
+    name: "Builder's Choice",
+    price: "$799",
+    tagline: "Best value for medium construction needs.",
     features: [
-      "Up to 8 pages",
-      "Blog + CMS",
-      "CRM integration",
-      "Performance optimization",
+      "10 bags premium cement",
+      "100 precast blocks",
+      "5 tons quality sand",
+      "50 iron bars",
     ],
-    cta: "Scale Now",
+    cta: "Get Builder Pack",
     highlighted: true,
   },
   {
-    name: "Custom",
-    price: "Book call",
-    tagline: "Tailored builds for unique needs.",
+    name: "Custom Bulk",
+    price: "Contact Us",
+    tagline: "Tailored bulk orders for large projects.",
     features: [
-      "Custom design system",
-      "Advanced automations",
-      "A/B testing",
-      "Priority support",
+      "Custom cement quantity",
+      "Bulk precast blocks",
+      "Bulk sand delivery",
+      "Bulk iron bars",
     ],
-    cta: "Talk to Us",
+    cta: "Request Quote",
   },
 ];
 
 const testimonials: Testimonial[] = [
   {
     quote:
-      "They delivered a site that 10x'd our inbound demos in 60 days—clean, fast, and on-brand.",
-    author: "Avery Chen",
-    role: "Head of Growth, LumenAI",
+      "The cement quality is top-notch and delivery was always on time. Our projects are stronger than ever.",
+    author: "Engr. Carlos Dela Cruz",
+    role: "Site Manager, BuildPro Inc.",
   },
   {
     quote:
-      "Seamless collaboration and real business outcomes. We treat them like part of the team.",
-    author: "Miguel Santos",
-    role: "COO, Coastline Logistics",
+      "Precast blocks and iron bars from MCPM made our construction process faster and more reliable.",
+    author: "Maria Santos",
+    role: "Project Engineer, UrbanRise",
   },
   {
     quote:
-      "From strategy to execution—flawless. Our conversions are up and the site is easy to manage.",
-    author: "Priya Sharma",
-    role: "Marketing Lead, Finverse",
+      "We trust MCPM for all our sand and cement needs. Consistent quality and great service.",
+    author: "Jose Ramirez",
+    role: "Contractor, Ramirez Builders",
   },
 ];
 
@@ -158,8 +149,24 @@ const kpiData = [
   { name: "Jun", value: 58 },
 ];
 
-// ---------- Components ----------
 
+const nav: NavItem[] = [
+  { label: "Materials", href: "#features" },
+  { label: "Products", href: "#solutions" },
+  { label: "Pricing", href: "#pricing" },
+  { label: "Projects", href: "#portfolio" },
+  { label: "About Us", href: "#about" },
+  { label: "FAQ", href: "#faq" },
+];
+
+const image_urls = [
+  "/images/sample1.jpg",
+  "/images/sample2.jpg",
+  "/images/sample3.jpg",
+  // add more image paths as needed
+];
+
+// ---------- Components ----------
 const Container: React.FC<React.PropsWithChildren<{ className?: string }>> = ({
   children,
   className = "",
@@ -171,41 +178,106 @@ const Container: React.FC<React.PropsWithChildren<{ className?: string }>> = ({
   </div>
 );
 
+
+const Header: React.FC = () => {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <header className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/60 bg-white/80 border-b">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between py-4">
+      <a href="#" className="flex items-center gap-2 font-semibold">
+        <Image
+          src="/favicon.ico"
+          alt="MCPM logo"
+          width={32}
+          height={32}
+          className="h-8 w-8 rounded-2xl bg-black text-white grid place-items-center"
+          unoptimized
+        />
+        <span className="text-lg">MCPM</span>
+      </a>
+        <nav className="hidden md:flex items-center gap-6">
+          {nav.map((n) => (
+            <a key={n.href} href={n.href} className="text-sm text-gray-600 hover:text-gray-900">
+              {n.label}
+            </a>
+          ))}
+          <Button className="rounded-2xl">Order Materials</Button>
+        </nav>
+        <button
+          aria-label="Toggle Menu"
+          className="md:hidden p-2"
+          onClick={() => setOpen((v) => !v)}
+        >
+          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        </button>
+      </div>
+      {open && (
+        <div className="md:hidden border-t bg-white">
+          <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex flex-col gap-4">
+            {nav.map((n) => (
+              <a key={n.href} href={n.href} className="text-sm text-gray-700">
+                {n.label}
+              </a>
+            ))}
+            <Button className="rounded-2xl w-full">Order Materials</Button>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+};
+
+
+const ImageLoop: React.FC = () => (
+  <div className="flex gap-4 overflow-x-auto py-4">
+    {image_urls.map((url, idx) => (
+      <Image
+        key={idx}
+        src={url}
+        alt={`loop_image_${idx}`}
+        width={320}
+        height={160}
+        className="h-40 w-auto rounded-xl object-cover flex-shrink-0"
+        unoptimized
+      />
+    ))}
+  </div>
+);
+
 const Hero: React.FC = () => (
   <section className="relative overflow-hidden">
     <div className="pointer-events-none absolute inset-0 -z-10 bg-gradient-to-b from-white via-white to-gray-50" />
     <Container className="py-20 md:py-28 grid lg:grid-cols-2 gap-10 items-center">
       <div className="space-y-6 opacity-0 animate-fadeIn">
-        <Badge className="rounded-2xl px-3 py-1">New: Site Launch Kit</Badge>
+        <Badge className="rounded-2xl px-3 py-1">Now Available: Bulk Cement & Blocks</Badge>
         <h1 className="text-4xl md:text-6xl font-semibold leading-tight">
-          Build a business website that looks great and sells even better.
+          Build stronger with premium construction materials.
         </h1>
         <p className="text-gray-600 text-lg md:text-xl">
-          Strategy, design, and development in one modern template. Ship fast,
-          iterate faster.
+          Cement, sand, precast blocks, and iron bars delivered to your site—fast and reliable.
         </p>
         <div className="flex flex-col sm:flex-row gap-3">
           <Button className="rounded-2xl h-11 px-6">
-            Start Free Brief
+            Get Free Quote
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
           <Button variant="outline" className="rounded-2xl h-11 px-6">
-            View Work
+            View Products
             <ExternalLink className="ml-2 h-4 w-4" />
           </Button>
         </div>
         <div className="flex items-center gap-6 pt-2">
-          <div className="text-3xl font-semibold">+58%</div>
-          <div className="text-gray-600">avg. lead growth after launch</div>
+          <div className="text-3xl font-semibold">+75%</div>
+          <div className="text-gray-600">faster delivery for your materials</div>
         </div>
       </div>
       <div className="rounded-3xl border bg-white p-6 shadow-sm opacity-0 animate-fadeIn [animation-delay:200ms]">
-        <div className="text-sm font-medium mb-4">Projected Impact</div>
+        <div className="text-sm font-medium mb-4">Material Supply Trend</div>
         <div className="h-64 w-full">
           <KpiChart data={kpiData} />
         </div>
         <div className="mt-4 grid grid-cols-3 gap-4">
-          {["Speed", "SEO", "Leads"].map((k) => (
+          {["Cement", "Blocks", "Iron Bars"].map((k) => (
             <div key={k} className="rounded-2xl border p-3 text-center">
               <div className="text-xl font-semibold">A+</div>
               <div className="text-xs text-gray-600">{k}</div>
@@ -221,8 +293,8 @@ const Features: React.FC = () => (
   <section id="features" className="py-16 md:py-24">
     <Container>
       <div className="mx-auto max-w-2xl text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-semibold">Everything you need to win online</h2>
-        <p className="text-gray-600 mt-3">A modular template that adapts to any service business.</p>
+        <h2 className="text-3xl md:text-4xl font-semibold">All the materials you need for your next build</h2>
+        <p className="text-gray-600 mt-3">From cement to iron bars, we supply quality construction essentials.</p>
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {features.map((f) => (
@@ -245,16 +317,16 @@ const Solutions: React.FC = () => (
       <div className="grid lg:grid-cols-3 gap-6 items-stretch">
         <Card className="rounded-3xl lg:col-span-2">
           <CardHeader>
-            <Badge className="rounded-2xl w-fit mb-2">Services</Badge>
-            <CardTitle className="text-2xl">High-impact website builds</CardTitle>
+            <Badge className="rounded-2xl w-fit mb-2">Products</Badge>
+            <CardTitle className="text-2xl">Construction Material Supplies</CardTitle>
           </CardHeader>
           <CardContent className="grid sm:grid-cols-2 gap-4">
-            {["Brand sites", "Marketing sites", "Landing pages", "Ecommerce"].map((s) => (
+            {["Cement", "Precast Blocks", "Sand", "Iron Bars"].map((s) => (
               <div key={s} className="rounded-2xl border p-4 flex items-start gap-3">
                 <Check className="h-5 w-5" />
                 <div>
                   <div className="font-medium">{s}</div>
-                  <div className="text-sm text-gray-600">Built for speed, SEO, and conversion.</div>
+                  <div className="text-sm text-gray-600">Available in various grades and sizes.</div>
                 </div>
               </div>
             ))}
@@ -263,16 +335,16 @@ const Solutions: React.FC = () => (
         <Card className="rounded-3xl">
           <CardHeader>
             <Badge className="rounded-2xl w-fit mb-2">Add-ons</Badge>
-            <CardTitle className="text-2xl">Extras that move the needle</CardTitle>
+            <CardTitle className="text-2xl">Delivery & Services</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {["Analytics setup", "CRM + automations", "Content production", "Design system"].map(
+            {["Site delivery", "Bulk discounts", "Custom orders", "Technical support"].map(
               (s) => (
                 <div key={s} className="rounded-2xl border p-4 flex items-start gap-3">
                   <Check className="h-5 w-5" />
                   <div>
                     <div className="font-medium">{s}</div>
-                    <div className="text-sm text-gray-600">Plug-and-play with your stack.</div>
+                    <div className="text-sm text-gray-600">Enhance your material sourcing experience.</div>
                   </div>
                 </div>
               )
@@ -289,20 +361,20 @@ const Portfolio: React.FC = () => (
     <Container>
       <div className="flex items-end justify-between mb-8">
         <div>
-          <h3 className="text-3xl font-semibold">Recent work</h3>
-          <p className="text-gray-600">Case studies that show the process and the wins.</p>
+          <h3 className="text-3xl font-semibold">Recent Projects</h3>
+          <p className="text-gray-600">See how our materials power real construction sites.</p>
         </div>
-        <Button variant="outline" className="rounded-2xl">View All</Button>
+        <Button variant="outline" className="rounded-2xl">View All Projects</Button>
       </div>
       <div className="grid md:grid-cols-3 gap-6">
         {[1, 2, 3].map((i) => (
           <Card key={i} className="rounded-3xl overflow-hidden">
             <div className="aspect-[16/10] bg-gradient-to-br from-gray-100 to-gray-200" />
             <CardHeader>
-              <CardTitle className="text-lg">Project {i}</CardTitle>
+              <CardTitle className="text-lg">Project {i}: Cement & Blocks</CardTitle>
             </CardHeader>
             <CardContent className="text-sm text-gray-600">
-              Conversion-focused redesign yielding measurable growth.
+              High-quality materials delivered for a successful build.
             </CardContent>
           </Card>
         ))}
@@ -315,8 +387,8 @@ const Pricing: React.FC = () => (
   <section id="pricing" className="py-16 md:py-24 bg-gray-50">
     <Container>
       <div className="mx-auto max-w-2xl text-center mb-12">
-        <h3 className="text-3xl md:text-4xl font-semibold">Simple pricing</h3>
-        <p className="text-gray-600 mt-3">Pick a plan and upgrade when you grow.</p>
+        <h3 className="text-3xl md:text-4xl font-semibold">Material Pricing</h3>
+        <p className="text-gray-600 mt-3">Choose the right package for your construction needs.</p>
       </div>
       <div className="grid md:grid-cols-3 gap-6">
         {plans.map((p) => (
@@ -327,7 +399,7 @@ const Pricing: React.FC = () => (
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-2xl">{p.name}</CardTitle>
-                {p.highlighted && <Badge className="rounded-2xl">Popular</Badge>}
+                {p.highlighted && <Badge className="rounded-2xl">Best Seller</Badge>}
               </div>
               <div className="text-3xl font-semibold">{p.price}</div>
               <div className="text-sm text-gray-600">{p.tagline}</div>
@@ -354,8 +426,8 @@ const Testimonials: React.FC = () => (
   <section className="py-16 md:py-24">
     <Container>
       <div className="mx-auto max-w-2xl text-center mb-12">
-        <h3 className="text-3xl md:text-4xl font-semibold">What clients say</h3>
-        <p className="text-gray-600 mt-3">Proof from real projects and teams.</p>
+        <h3 className="text-3xl md:text-4xl font-semibold">What builders say</h3>
+        <p className="text-gray-600 mt-3">Trusted by contractors and engineers nationwide.</p>
       </div>
       <div className="grid md:grid-cols-3 gap-6">
         {testimonials.map((t) => (
@@ -379,12 +451,12 @@ const About: React.FC = () => (
     <Container className="grid lg:grid-cols-2 gap-10 items-center">
       <div className="rounded-3xl border aspect-[4/3] bg-gradient-to-br from-gray-100 to-gray-200" />
       <div>
-        <h3 className="text-3xl md:text-4xl font-semibold">We build with intent</h3>
+        <h3 className="text-3xl md:text-4xl font-semibold">Supplying quality since day one</h3>
         <p className="text-gray-600 mt-4">
-          Senior-level designers and engineers shipping modern websites that are fast, scalable, and easy to maintain. We focus on business outcomes—leads, demos, and sales—not vanity metrics.
+          MCPM delivers premium cement, sand, blocks, and iron bars for every construction project. We focus on quality, reliability, and customer satisfaction.
         </p>
         <div className="mt-6 grid sm:grid-cols-3 gap-4">
-          {["<1 week MVP", "95+ Lighthouse", "SEO-ready"].map((k) => (
+          {["Fast Delivery", "Bulk Discounts", "Trusted by Builders"].map((k) => (
             <div key={k} className="rounded-2xl border p-4 text-center">
               <div className="text-xl font-semibold">{k}</div>
             </div>
@@ -399,27 +471,27 @@ const FAQ: React.FC = () => (
   <section id="faq" className="py-16 md:py-24">
     <Container>
       <div className="mx-auto max-w-2xl text-center mb-8">
-        <h3 className="text-3xl md:text-4xl font-semibold">FAQ</h3>
-        <p className="text-gray-600 mt-3">Quick answers to common questions.</p>
+        <h3 className="text-3xl md:text-4xl font-semibold">Frequently Asked Questions</h3>
+        <p className="text-gray-600 mt-3">Quick answers about our construction materials.</p>
       </div>
       <div className="mx-auto max-w-2xl">
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
-            <AccordionTrigger>How long does a project take?</AccordionTrigger>
+            <AccordionTrigger>How fast can you deliver cement and blocks?</AccordionTrigger>
             <AccordionContent>
-              Typical engagements ship in 2–6 weeks depending on scope and content readiness.
+              Most orders are delivered within 2–3 days depending on location and quantity.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-2">
-            <AccordionTrigger>What stack do you use?</AccordionTrigger>
+            <AccordionTrigger>What brands of cement do you supply?</AccordionTrigger>
             <AccordionContent>
-              React/Next.js, TypeScript, Tailwind, and a headless CMS. We integrate with your tools.
+              We offer top local and international brands. Contact us for specific requests.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-3">
-            <AccordionTrigger>Do you offer ongoing support?</AccordionTrigger>
+            <AccordionTrigger>Can I order custom quantities?</AccordionTrigger>
             <AccordionContent>
-              Yes—maintenance, iteration sprints, and growth retainers are available.
+              Yes—custom and bulk orders are welcome. Let us know your requirements.
             </AccordionContent>
           </AccordionItem>
         </Accordion>
@@ -433,14 +505,14 @@ const Contact: React.FC = () => (
     <Container className="grid lg:grid-cols-2 gap-8 items-start">
       <Card className="rounded-3xl">
         <CardHeader>
-          <CardTitle className="text-2xl">Tell us about your project</CardTitle>
+          <CardTitle className="text-2xl">Request a Material Quote</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <Input placeholder="Full name" />
           <Input type="email" placeholder="Work email" />
           <Input placeholder="Company" />
-          <Textarea placeholder="What are you trying to achieve?" />
-          <Button className="rounded-2xl w-full h-11">Send Inquiry</Button>
+          <Textarea placeholder="What materials do you need?" />
+          <Button className="rounded-2xl w-full h-11">Send Request</Button>
           <div className="text-xs text-gray-600 text-center">
             By submitting, you agree to our terms and privacy policy.
           </div>
@@ -451,7 +523,7 @@ const Contact: React.FC = () => (
           <Mail className="h-5 w-5" />
           <div>
             <div className="font-medium">Email</div>
-            <a href="mailto:hello@brand.com" className="text-gray-600">hello@brand.com</a>
+            <a href="mailto:sales@mcpm.com" className="text-gray-600">sales@mcpm.com</a>
           </div>
         </div>
         <div className="rounded-3xl border p-6 flex items-start gap-4">
@@ -464,8 +536,8 @@ const Contact: React.FC = () => (
         <div className="rounded-3xl border p-6 flex items-start gap-4">
           <MapPin className="h-5 w-5" />
           <div>
-            <div className="font-medium">Office</div>
-            <div className="text-gray-600">123 Market St, Suite 400, Manila</div>
+            <div className="font-medium">Warehouse</div>
+            <div className="text-gray-600">123 Supply Rd, Industrial Zone, Manila</div>
           </div>
         </div>
       </div>
@@ -477,46 +549,53 @@ const Footer: React.FC = () => (
   <footer className="py-12 border-t bg-white">
     <Container className="grid md:grid-cols-4 gap-8 text-sm">
       <div className="space-y-3">
-        <a href="#" className="flex items-center gap-2 font-semibold">
-          <div className="h-8 w-8 rounded-2xl bg-black text-white grid place-items-center">B</div>
-          <span className="text-lg">Brand</span>
-        </a>
+      <a href="#" className="flex items-center gap-2 font-semibold">
+        <Image
+          src="/favicon.ico"
+          alt="MCPM logo"
+          width={32}
+          height={32}
+          className="h-8 w-8 rounded-2xl bg-black text-white grid place-items-center"
+          unoptimized
+        />
+        <span className="text-lg">MCPM</span>
+      </a>
         <p className="text-gray-600">
-          Modern websites that drive growth. Built fast, built right.
+          Your trusted source for cement, sand, blocks, and iron bars.
         </p>
       </div>
       <div>
         <div className="font-medium mb-3">Company</div>
         <ul className="space-y-2 text-gray-600">
-          <li><a href="#about">About</a></li>
-          <li><a href="#portfolio">Work</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#portfolio">Projects</a></li>
           <li><a href="#pricing">Pricing</a></li>
           <li><a href="#faq">FAQ</a></li>
         </ul>
       </div>
       <div>
-        <div className="font-medium mb-3">Resources</div>
+        <div className="font-medium mb-3">Materials</div>
         <ul className="space-y-2 text-gray-600">
-          <li><a href="#">Blog</a></li>
-          <li><a href="#">Guides</a></li>
-          <li><a href="#">Privacy</a></li>
-          <li><a href="#">Terms</a></li>
+          <li><a href="#">Cement</a></li>
+          <li><a href="#">Precast Blocks</a></li>
+          <li><a href="#">Sand</a></li>
+          <li><a href="#">Iron Bars</a></li>
         </ul>
       </div>
       <div>
         <div className="font-medium mb-3">Newsletter</div>
         <div className="flex gap-2">
           <Input placeholder="Your email" />
-          <Button className="rounded-2xl">Join</Button>
+          <Button className="rounded-2xl">Subscribe</Button>
         </div>
-        <div className="text-xs text-gray-600 mt-2">No spam. Unsubscribe anytime.</div>
+        <div className="text-xs text-gray-600 mt-2">Get updates on new materials and promos.</div>
       </div>
     </Container>
     <Container className="pt-8 mt-8 border-t text-xs text-gray-600 flex items-center justify-between">
-      <div>© {new Date().getFullYear()} Brand, Inc. All rights reserved.</div>
+      <div>© {new Date().getFullYear()} MCPM Materials, Inc. All rights reserved.</div>
       <div className="flex gap-4">
+        <a href="#">Facebook</a>
         <a href="#">LinkedIn</a>
-        <a href="#">Twitter</a>
         <a href="#">Instagram</a>
       </div>
     </Container>
@@ -524,13 +603,24 @@ const Footer: React.FC = () => (
 );
 
 
+
 export default function BusinessWebsiteTemplate() {
   return (
     <main className="min-h-screen bg-white text-gray-900">
+       <div className="w-full aspect-[3/1] bg-gray-100 relative">
+        <Image
+          src="/images/cover.jpg"
+          alt="construction materials cover"
+          fill
+          className="object-contain"
+          priority
+        />
+      </div>
       <Header />
       <Hero />
       <Features />
       <Solutions />
+      {/* <ImageLoop /> */}
       <Portfolio />
       <Pricing />
       <Testimonials />

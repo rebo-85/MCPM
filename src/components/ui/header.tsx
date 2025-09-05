@@ -15,33 +15,7 @@ const nav: NavItem[] = [
   { label: "FAQ", href: "#faq" },
 ];
 
-import {
-  AreaChart,
-  Area,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
-
-type KpiChartProps = {
-  data: { name: string; value: number }[];
-};
-
-
-export function KpiChart({ data }: KpiChartProps) {
-  return (
-    <ResponsiveContainer width="100%" height="100%">
-      <AreaChart data={data} margin={{ left: 12, right: 12 }}>
-        <XAxis dataKey="name" tickLine={false} axisLine={false} />
-        <YAxis tickLine={false} axisLine={false} />
-        <Tooltip />
-        <Area type="monotone" dataKey="value" fillOpacity={0.15} strokeWidth={2} />
-      </AreaChart>
-    </ResponsiveContainer>
-  );
-}
-export const Header: React.FC = () => {
+const Header: React.FC = () => {
   const [open, setOpen] = React.useState(false);
   return (
     <header className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-white/60 bg-white/80 border-b">
@@ -81,3 +55,5 @@ export const Header: React.FC = () => {
     </header>
   );
 };
+
+export { Header }
