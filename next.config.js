@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
-
-module.exports = nextConfig;
+const repo = "MCPM"; // your repo name
+module.exports = {
+  basePath: `/${repo}`,
+  assetPrefix: `/${repo}/`,
+};
